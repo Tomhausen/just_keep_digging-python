@@ -40,7 +40,6 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`entrance`, function enter(me:
     tiles.placeOnRandomTile(me, assets.tile`exit`)
     me.y -= 16
     generate_cave()
-    let is_outside = false
 })
 scene.onOverlapTile(SpriteKind.Player, assets.tile`exit`, function exit(me: Sprite, exit: tiles.Location) {
     scene.setTileMapLevel(assets.tilemap`outside`)

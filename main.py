@@ -39,7 +39,6 @@ def enter(me, entrance):
     tiles.place_on_random_tile(me, assets.tile("exit"))
     me.y -= 16
     generate_cave()
-    is_outside = False
 scene.on_overlap_tile(SpriteKind.player, assets.tile("entrance"), enter)
 
 def exit(me, exit):
