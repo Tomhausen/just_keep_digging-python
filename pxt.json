@@ -9,7 +9,7 @@
         "arcade-text": "github:microsoft/arcade-text#v1.3.0",
         "Menu Extension": "github:Tomhausen/Menu-Extension#v0.0.4",
         "Tiles Advanced": "github:tomhausen/the-code-zone-tiles-advanced#v0.5.9",
-        "dict_ext": "github:tomhausen/dictionary-extension-makecode#v1.0.4",
+        "dict_ext": "github:tomhausen/dictionary-extension-makecode#v1.0.5",
         "arcade-character-animations": "github:microsoft/arcade-character-animations#v0.0.2",
         "pxt-status-bar": "github:jwunderl/pxt-status-bar#v0.4.2"
     },
