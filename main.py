@@ -2,6 +2,13 @@
 me = sprites.create(assets.image("me"), SpriteKind.player)
 controller.move_sprite(me)
 me.z = 10
+# bh4
+characterAnimations.loop_frames(me, assets.animation("down"), 100, characterAnimations.rule(Predicate.MOVING_DOWN))
+characterAnimations.loop_frames(me, assets.animation("up"), 100, characterAnimations.rule(Predicate.MOVING_UP))
+characterAnimations.loop_frames(me, assets.animation("left"), 100, characterAnimations.rule(Predicate.MOVING_LEFT))
+characterAnimations.loop_frames(me, assets.animation("right"), 100, characterAnimations.rule(Predicate.MOVING_RIGHT))
+characterAnimations.loop_frames(me, [assets.image("me")], 100, characterAnimations.rule(Predicate.NOT_MOVING))
+# /bh4
 
 # setup
 scene.set_tile_map_level(assets.tilemap("outside"))
@@ -13,43 +20,65 @@ music.set_volume(20)
 # vars
 capacity = 10
 rock_mine_time = 300
-# gm1
 dynamite_count = 0
-# /gm1
+# gm2
+mining_level = 0
+# /gm2
 bag: List[string] = []
-# bh1 edit lines below
 metal_tiles = [assets.tile("iron"), assets.tile("copper"), assets.tile("silver"), assets.tile("gold"), assets.tile("platinum")]
 metals = ["iron", "copper", "silver", "gold", "platinum"]
 tile_names = Dictionary.create(metal_tiles, metals)
 metal_value = Dictionary.create(metals, [50, 200, 500, 1000, 2000])
 mine_time = Dictionary.create(metals, [1000, 1500, 4000, 7500, 15000])
-# /bh1
-# gm1 add dynamite
 costs = Dictionary.create(["Bag capacity: ", "Dynamite: "], [5000, 3000])
-# /gm1
+# gm2 only add final number if did bh1
+level_requirement = Dictionary.create(metals, [1, 2, 5, 10, 15])
+# /gm2
 
-# bh3
 # capacity text
 capacity_display = textsprite.create("", 1, 3)
 capacity_display.set_flag(SpriteFlag.RELATIVE_TO_CAMERA, True)
-# /bh3
 
-# bh3
+# gm2
+# XP bar
+xp_bar = statusbars.create(160, 8, StatusBarKind.magic)
+xp_bar.set_flag(SpriteFlag.RELATIVE_TO_CAMERA, True)
+xp_bar.bottom = 120
+background = sprites.create(image.create(160, 8))
+background.image.fill(1)
+background.set_flag(SpriteFlag.RELATIVE_TO_CAMERA, True)
+background.bottom = 120
+# /gm2
+
+# gm2
+def level_up():
+    global mining_level
+    mining_level += 1
+    xp_bar.set_label(str(mining_level), 3)
+    xp_bar.max = mining_level * 1000
+    xp_bar.value = 0
+level_up()
+# /gm2
+
+# gm2
+def reduce_mining_times():
+    for key in Dictionary.get_keys_list(mine_time):
+        new_time = Dictionary.get_value(mine_time, key) * 0.75
+        Dictionary.replace_value(mine_time, key, new_time)
+# /gm2
+
 def set_capacity_display():
     text = str(len(bag)) + "/" + str(capacity)
     capacity_display.set_text(text)
     capacity_display.top = 0
     capacity_display.left = 0
 set_capacity_display()
-# /bh3
 
 def generate_cave():
     for tile in tiles.get_tiles_by_type(assets.tile("rock")):
-        # bh1
         if randint(1, 50) == 1 and tile.row < 25:
             tiles.set_tile_at(tile, assets.tile("platinum"))
         elif randint(1, 50) == 1 and tile.row < 50:
-        # /bh1
             tiles.set_tile_at(tile, assets.tile("gold"))
         elif randint(1, 30) == 1 and tile.row < 75:
             tiles.set_tile_at(tile, assets.tile("silver"))
@@ -74,13 +103,24 @@ def exit(me, exit):
     me.y += 16
 scene.on_overlap_tile(SpriteKind.player, assets.tile("exit"), exit)
 
+# bh5
+def sell_effect(cost):
+    music.ba_ding.play()
+    cost_text = textsprite.create(str(cost))
+    cost_text.set_outline(1, 15)
+    tiles.place_on_random_tile(cost_text, assets.tile("sell"))
+    cost_text.vy = -50
+    cost_text.lifespan = 750
+# /bh5
+
 def sell():
     for item in bag:
         info.change_score_by(Dictionary.get_value(metal_value, item))
+        # bh5
+        sell_effect(Dictionary.get_value(metal_value, item))
+        # /bh5
         bag.remove_element(item)
-        # bh3
         set_capacity_display()
-        # /bh3
         pause(500)
 
 def collide_with_chest(me, location):
@@ -103,9 +143,7 @@ def open_shop(me, location):
 scene.on_overlap_tile(SpriteKind.player, assets.tile("buy"), open_shop)
 
 def buy(selection, selection_index):
-    # gm1 add count
     global capacity, dynamite_count
-    # /gm1
     sprites.destroy_all_sprites_of_kind(SpriteKind.mini_menu)
     controller.move_sprite(me)
     cost = Dictionary.get_values_list(costs)[selection_index]
@@ -115,12 +153,9 @@ def buy(selection, selection_index):
             capacity = Math.round(capacity * 1.33)
             me.say("Yay, I got it!", 3000)
             Dictionary.replace_value(costs, Dictionary.get_keys_list(costs)[0], cost * 2)
-            # bh3
             set_capacity_display()
-            # /bh3
         else:
             me.say("I don't have enough money", 3000)
-    # gm1
     if selection_index == 1:
         if info.score() >= cost:
             dynamite_count += 1
@@ -128,24 +163,27 @@ def buy(selection, selection_index):
             me.say("Yay, I got it!", 3000)
         else:
             me.say("I don't have enough money", 3000)
-    # /gm1
 
 def win():
     game.over(True)
 scene.on_overlap_tile(SpriteKind.player, assets.tile("diamond"), win)
 
-# gm1
 def pick_up_ore(me, ore):
     if len(bag) >= capacity:
         me.say("I can't carry any more", 3000)
         return
     bag.append(sprites.read_data_string(ore, "metal"))
-    # bh3 if did do gm1
     set_capacity_display()
-    # /bh3
+    # gm2 if did gm1
+    xp_bar.value += Dictionary.get_value(metal_value, sprites.read_data_string(ore, "metal"))
+    if xp_bar.value >= xp_bar.max:
+        level_up()
+        reduce_mining_times()
+        music.power_up.play()
+        effects.confetti.start_screen_effect(3000)
+    # /gm2
     ore.destroy()
 sprites.on_overlap(SpriteKind.player, SpriteKind.food, pick_up_ore)
-# /gm1
 
 def get_direction():
     if controller.up.is_pressed():
@@ -158,7 +196,6 @@ def get_direction():
         return CollisionDirection.RIGHT
     return -1
 
-# gm1
 def drop_ore(location):
     tile = tiles.tile_image_at_location(location)
     ore = sprites.create(tile.clone(), SpriteKind.food)
@@ -166,9 +203,7 @@ def drop_ore(location):
     tiles.place_on_tile(ore, location)
     metal = Dictionary.get_value(tile_names, tile)
     sprites.set_data_string(ore, "metal", str(metal))
-# /gm1
 
-# bh2
 def make_timer_bar(mining_time):
     bar = statusbars.create(20, 4, StatusBarKind.energy)
     bar.attach_to_sprite(me)
@@ -179,36 +214,47 @@ def make_timer_bar(mining_time):
         bar.value += 10
         pause(10)
     bar.destroy()
-# /bh2
+
+# bh6
+def destroy_block(location, mine_time):
+    block = sprites.create(tiles.tile_image_at_location(location))
+    tiles.place_on_tile(block, location)
+    block.destroy(effects.disintegrate, mine_time)
+    scene.camera_shake(4, mine_time)
+    music.big_crash.play()
+# /bh6
 
 def mine(location):
-    # gm1 remove
-    # if len(bag) >= capacity:
-    #     me.say("I can't carry any more", 3000)
-    #     return
-    # /gm1
     controller.move_sprite(me, 0, 0)
     pause_time = rock_mine_time
     if tiles.tile_image_at_location(location) in metal_tiles:
         metal = Dictionary.get_value(tile_names, tiles.tile_image_at_location(location))
         pause_time = Dictionary.get_value(mine_time, metal)
-        # gm1 remove
-        # bag.append(str(metal))
-        # /gm1
-    # bh2
+        # gm2
+        if Dictionary.get_value(level_requirement, metal) > mining_level:
+            me.say("I can't mine this yet", 3000)
+            controller.move_sprite(me)
+            return
+        # /gm2
+    # bh6
+    destroy_block(location, pause_time)
+    # /bh6
     make_timer_bar(pause_time)
-    # pause(pause_time) # remove
-    # /bh2
-    # gm1
     if tiles.tile_image_at_location(location) in metal_tiles:
         drop_ore(location)
-    # /gm1
+    # gm2 if didnt gm1
+    # if tiles.tile_image_at_location(location) in metal_tiles:
+    #     xp_bar.value += Dictionary.get_value(metal_value, str(metal))
+    #     if xp_bar.value >= xp_bar.max:
+    #         level_up()
+    #         reduce_mining_times()
+    #         music.power_up.play()
+    #         effects.confetti.start_screen_effect(3000)
+    # /gm2
     controller.move_sprite(me)
     tiles.set_tile_at(location, assets.tile("floor"))
     tiles.set_wall_at(location, False)
-    # bh3 if didnt do gm1
-    # set_capacity_display()
-    # /bh3
+
 
 def attempt_mine():
     location = me.tilemap_location().get_neighboring_location(get_direction())
@@ -217,7 +263,6 @@ def attempt_mine():
         mine(location)
 controller.A.on_event(ControllerButtonEvent.PRESSED, attempt_mine)
 
-# gm1
 def place_dynamite():
     global dynamite_count
     if dynamite_count < 1:
@@ -238,9 +283,14 @@ def place_dynamite():
             tiles.set_tile_at(tile, assets.tile("floor"))
             tiles.set_wall_at(tile, False)
 controller.B.on_event(ControllerButtonEvent.PRESSED, place_dynamite)
-# /gm1
 
-# gh1 drop on floor and buy dynamite - DONE
+# gh1 drop on floor and super drill power up GM - DONE
 # bh1 new thing to mine - DONE
 # bh2 use status bar to show mining time - DONE
 # bh3 show capacity - DONE
+
+# gh2 upgrade pickaxe GM - DONE
+# bh4 walking anim - DONE
+# bh5 sale effect - DONE
+# bh6 animate tile being destroyed - DONE MAYBE DITCH THIS FOR SOMETHING BETTER?
+
