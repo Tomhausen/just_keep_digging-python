@@ -29,11 +29,6 @@
         "mimeType": "image/x-mkcd-f4",
         "displayName": "rock"
     },
-    "image3": {
-        "data": "hwQQABAAAACZmZmZmZmZmZmZmZmZmZmZmcmZmZmZyZmZyZyZmZnJmZnJnJnJnJmZmcyZnMmcmZmZzJnMmZmZmZnJmcyZmZyZmZmZnMmZnJmZmZmZyZyZmZmZmZnJnJmZmZzJmcmZyZmZnJmZyZmZmZmZmcmZmZmZmZmZyZmZmZmZmZmZmZmZmQ==",
-        "mimeType": "image/x-mkcd-f4",
-        "displayName": "platinum"
-    },
     "image5": {
         "data": "hwQQABAAAAAAAAAAAAAAADMDAEQERAREMD1D1URVREUAU11VNVVdBAAwVRXR3U0AAEAdFVE1RAAAVBFRVVVNBABUEVFV1U0EAEAdVdXdTQQAQFURVT1EAADUFRFV3UMAANQdEd1VTQBATVRd1VVNBERERFTVRAREAAAAREQAAEAAAAAAAAAAAA==",
         "mimeType": "image/x-mkcd-f4",
@@ -43,6 +38,11 @@
         "data": "hwQQABAAAAAAAAAAAAAPAAAAAAAA8PIAAAAAAAAvIg8AAAAA8CIi8gAAAAAvIiIPAAAA8CEi8gAAAAAfESIPAAAA8BER8QAAAAAvEhEPAAAA8CIi8QAAAAAvIiIPAAAAAPAi8gAAAAAA8C8PAAAAAAAP8AAAAAAAAA8AAAAAAAAA8AAAAAAAAA==",
         "mimeType": "image/x-mkcd-f4",
         "displayName": "dynamite"
+    },
+    "image3": {
+        "data": "hwQQABAAAACZmZmZmZmZmZmZmZmZmZmZmbmZmZmZuZmZuZuZmZm5mZm5m5m5m5mZmbuZm7mbmZmZu5m7mZmZmZm5mbuZmZuZmZmZm7mZm5mZmZmZuZuZmZmZmZm5m5mZmZu5mbmZuZmZm5mZuZmZmZmZmbmZmZmZmZmZuZmZmZmZmZmZmZmZmQ==",
+        "mimeType": "image/x-mkcd-f4",
+        "displayName": "platinum"
     },
     "anim1": {
         "namespace": "myAnimations",

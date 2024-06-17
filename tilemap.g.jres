@@ -76,17 +76,17 @@
         "tilemapTile": true,
         "displayName": "copper"
     },
-    "tile13": {
-        "data": "hwQQABAAAACZmZmZmZmZmZmZmZmZmZmZmcmZmZmZyZmZyZyZmZnJmZnJnJnJnJmZmcyZnMmcmZmZzJnMmZmZmZnJmcyZmZyZmZmZnMmZnJmZmZmZyZyZmZmZmZnJnJmZmZzJmcmZyZmZnJmZyZmZmZmZmcmZmZmZmZmZyZmZmZmZmZmZmZmZmQ==",
-        "mimeType": "image/x-mkcd-f4",
-        "tilemapTile": true,
-        "displayName": "platinum"
-    },
     "tile14": {
         "data": "hwQQABAAAACZmWmWmZmZmZmZZmiZmZmZmWloiJaZmZmZhmiIaJmZmZmGZoaIlpmZmWZoaIZomZmZhmiIaIaWmZmGaIiIaGiZmYZoiIhoaJmZhmiIaIaWmZlmaGiGaJmZmYZmhoiWmZmZhmiIaJmZmZlpaIiWmZmZmZlmaJmZmZmZmWmWmZmZmQ==",
         "mimeType": "image/x-mkcd-f4",
         "tilemapTile": true,
         "displayName": "diamond"
+    },
+    "tile13": {
+        "data": "hwQQABAAAACZmZmZmZmZmZmZmZmZmZmZmbmZmZmZuZmZuZuZmZm5mZm5m5m5m5mZmbuZm7mbmZmZu5m7mZmZmZm5mbuZmZuZmZmZm7mZm5mZmZmZuZuZmZmZmZm5m5mZmZu5mbmZuZmZm5mZuZmZmZmZmbmZmZmZmZmZuZmZmZmZmZmZmZmZmQ==",
+        "mimeType": "image/x-mkcd-f4",
+        "tilemapTile": true,
+        "displayName": "platinum"
     },
     "level1": {
         "id": "level1",
