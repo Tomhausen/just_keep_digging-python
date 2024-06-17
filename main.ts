@@ -71,7 +71,7 @@ scene.onOverlapTile(SpriteKind.Player, assets.tile`buy`, function open_shop(me: 
     menu.setFlag(SpriteFlag.RelativeToCamera, true)
     menu.onButtonPressed(controller.A, function buy(selection: string, selection_index: number) {
         let capacity: number;
-        sprites.allOfKind(SpriteKind.MiniMenu)[0].destroy()
+        sprites.destroyAllSpritesOfKind(SpriteKind.MiniMenu)
         controller.moveSprite(me)
         let cost = Dictionary.get_values_list(costs)[selection_index]
         if (selection_index == 0) {

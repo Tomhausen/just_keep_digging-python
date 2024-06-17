@@ -73,7 +73,7 @@ def open_shop(me, location):
 scene.on_overlap_tile(SpriteKind.player, assets.tile("buy"), open_shop)  
 
 def buy(selection, selection_index):
-    sprites.all_of_kind(SpriteKind.mini_menu)[0].destroy()
+    sprites.destroy_all_sprites_of_kind(SpriteKind.mini_menu)
     controller.move_sprite(me)
     cost = Dictionary.get_values_list(costs)[selection_index]
     if selection_index == 0:
