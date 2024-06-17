@@ -45,10 +45,8 @@ function generate_cave() {
         //  bh1
         if (randint(1, 50) == 1 && tile.row < 25) {
             tiles.setTileAt(tile, assets.tile`platinum`)
-        }
-        
-        //  /bh1
-        if (randint(1, 50) == 1 && tile.row < 50) {
+        } else if (randint(1, 50) == 1 && tile.row < 50) {
+            //  /bh1
             tiles.setTileAt(tile, assets.tile`gold`)
         } else if (randint(1, 30) == 1 && tile.row < 75) {
             tiles.setTileAt(tile, assets.tile`silver`)

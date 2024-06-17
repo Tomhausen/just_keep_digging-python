@@ -48,8 +48,8 @@ def generate_cave():
         # bh1
         if randint(1, 50) == 1 and tile.row < 25:
             tiles.set_tile_at(tile, assets.tile("platinum"))
+        elif randint(1, 50) == 1 and tile.row < 50:
         # /bh1
-        if randint(1, 50) == 1 and tile.row < 50:
             tiles.set_tile_at(tile, assets.tile("gold"))
         elif randint(1, 30) == 1 and tile.row < 75:
             tiles.set_tile_at(tile, assets.tile("silver"))
